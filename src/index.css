@@ -1,10 +1,9 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color:  #121213;
 }
 
 code {
@@ -13,8 +12,87 @@ code {
 }
 .app{
   background-color: red;
+  color: red;
+  text-align: center;
+}
+.title-container{
+  margin: 0 auto;
+  width: 100vw;
+  height: 12vh;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 3%;
+  border-bottom: 1px grey solid;
+}
+.title{
+  color: white;
+  margin: 0 auto;
+}
+.input-container{
+  margin: 0 auto;
+  width: 28%;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  grid-template-rows: auto auto auto auto auto;
+  row-gap: 7px;
+  column-gap: 7px;
+}
+.InputField{
+  width: 100%;
+  -webkit-appearance: none;
+  border: 1px grey solid;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-around;
+  font-size: 40px;
+  border-radius: 4px;
+  height: 80px;
+  width: 80px;
+}
+.unselected{
+  background-color: transparent;
+  animation-name: zoomin;
+  animation-iteration-count: 1;
+  animation-duration: .2s;
+  border: 1px grey solid;
+}.selected{
+  background-color: transparent;
+  border: 2px grey solid;
+  animation-name: zoomout;
+  animation-iteration-count: 1;
+  animation-duration: .2s;
 }
 .InputField:disabled{
-  border-radius: 10px;
+  -webkit-appearance: none;
   color: black;
+}
+.littleshak{
+  animation-name: littleshake;
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+}
+@keyframes littleshake{
+  from{
+    transform: translateX(50px);
+  }to{
+    transform-origin: translateX(500px);
+  }
+}
+@keyframes zoomout{
+  from{
+    scale: 0;
+  }to{
+    scale: 1;
+  }
+}@keyframes zoomin{
+  from{
+    scale: 0;
+  }to{
+    scale: 1;
+  }
 }

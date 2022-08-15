@@ -1,55 +1,65 @@
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import Words from "./Words";
 function App() {
-  const [CurrentLineValue , SetCurrentLineValue] = useState()
-  const [ErrMsg , setErrMsg] = useState()
-  const [InputIndex , setInputIndex] = useState(1)
-  let wordindex = Math.floor(Math.random() * (Words.length))
-  const InputField = document.getElementsByClassName("InputField")
-  const Word = Words[wordindex]
-
-  function CheckWord(e){
-    let value = e.target.value
-    if(value.toLowerCase() == Word){
-      console.log("Correct")
-    }else{
-      for(let i = 0; i <5; i++){
-        if(Word[i] == value[i].toLowerCase()){
-          console.log("Green")
-        }else if(Word.includes(value[i].toLowerCase())){
-          console.log("Yellow")
-        }else{
-          console.log("grey")
-        }e.target.disabled = true;
-      }
+  const [position , setposition] = useState([0,0])  // first refers to row and second refers to place'
+  const [save , setsave] = useState([])
+  const [currentguess , setcurrentguess] = useState(["","","","",""])
+  const [output , setoutput ] = useState([])
+  var word = ""
+  useEffect(() => {
+    let load = []
+    for(let i = 0; i < 30; i ++){
+      load.push("")
     }
-    InputField[InputIndex].focus()
-    setInputIndex(InputIndex + 1)
-}
-
-  function HandleLineSubmit(e){
-    const value = e.target.value
-    if(value.length == 5){
-      if(Words.indexOf(value.toLowerCase()) !== -1){
-        setErrMsg("")
-        CheckWord(e)
-      }else{
-        setErrMsg("Word not in wordset")
+    setoutput(load)
+    word = Words[Math.floor(Math.random() * Words.length - 1)]
+    console.log(word)
+  },[])
+  
+  function updateoutput(){
+    console.log("inside function")
+    let newoutput = output
+    newoutput[(position[0] * 5) + position[1]] = currentguess[position[1]]
+    console.log(newoutput)
+    setoutput(newoutput)
+  }
+  function CheckWord(){
+    
+  }
+  document.onkeypress = function (e) {
+    console.log(typeof currentguess)
+    let c = e.keyCode
+    if(currentguess.length > 5 ){
+      if(c == 8){
+        setcurrentguess(currentguess.pop())
+        updateoutput()
+      }else if(c==13){
+        console.log("enter")
+        CheckWord()
       }
-    }else{
-      setErrMsg("Word not long enough")
+    }else if (96 < c && c < 123 || 64 < c && c < 91){
+      console.log(e.key.toUpperCase())
+      console.log(typeof currentguess)
+      let temp = currentguess.push(e.key.toUpperCase())
+      setcurrentguess(temp)
+      updateoutput()
+      setposition([position[0] , position[1] + 1])
+    }else if(c == 8){
+      console.log("pop")
+      setcurrentguess(currentguess.pop())
+      updateoutput()
     }
   }
-
   return (
-    <div className="App">
-      <h1>Wordle Clone</h1>
-      <input type="text" className="InputField" maxLength={5} onChange={event => {SetCurrentLineValue(event.target.value)}} onKeyPress={e => {if(e.which == 13){HandleLineSubmit(e)}}}/> <br />
-      <input type="text" className="InputField" maxLength={5} onChange={event => {SetCurrentLineValue(event.target.value)}} onKeyPress={e => {if(e.which == 13){HandleLineSubmit(e)}}}/> <br />
-      <input type="text" className="InputField" maxLength={5} onChange={event => {SetCurrentLineValue(event.target.value)}} onKeyPress={e => {if(e.which == 13){HandleLineSubmit(e)}}}/> <br />
-      <input type="text" className="InputField" maxLength={5} onChange={event => {SetCurrentLineValue(event.target.value)}} onKeyPress={e => {if(e.which == 13){HandleLineSubmit(e)}}}/> <br />
-      <input type="text" className="InputField" maxLength={5} onChange={event => {SetCurrentLineValue(event.target.value)}} onKeyPress={e => {if(e.which == 13){HandleLineSubmit(e)}}}/> <br />
-      {ErrMsg}
+    <div className="App" onKeyPress={e => {console.log("pressed")}}>
+      <div className="title-container">
+        <h1 className="title">Wordle Clone</h1>
+      </div>
+      <div className="input-container">
+        {output.map(value => (
+          <div className=" InputField" key={Math.random()}>{value}</div>
+        ))}
+      </div>
     </div>
   );
 }
