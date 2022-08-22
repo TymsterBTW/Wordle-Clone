@@ -32,44 +32,58 @@ code {
   margin: 0 auto;
 }
 .input-container{
-  margin: 10vh auto;
-  width: 28%;
-  background-attachment: red;
   display: grid;
-  grid-template-columns: auto auto auto auto auto;
-  grid-template-rows: auto auto auto auto auto auto;
-  padding: 5px;
-  row-gap: 10px;
-  column-gap: 10px;
+  margin: 0 auto;
+  width: 35vw;
+  grid-template-columns: 5vw 5vw 5vw 5vw 5vw;
+  grid-template-rows: 5vw 5vw 5vw 5vw 5vw 5vw;
+  justify-content: center;
+  row-gap: .6vw;
+  column-gap: .6vw;
 }
 .InputField{
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 30px;
+  font-style: bold;
   background-color: transparent;
-  color: red;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: space-around;
   height: 100%;
   width: 100%;
+  border: #565758 2px solid;
+  border-radius: 2px;
 }
 .Correct{
   background-color: #538d4e;
   border: none;
+  animation-name: flip;
+  animation-duration: 1.2s;
 }.Incorrect{
   background-color: #393a3c;
   border: none;
+  animation-name: flip;
+  animation-duration: 1.2s;
 }.ElseWhere{
   background-color: #b49f3b;
   border: none;
-}.zoomoutClass{
-  color: red;
-  animation-name: zoomout;
-  animation-duration: 5s;
-  animation-iteration-count: 1;
+  animation-name: flip;
+  animation-duration: 1.2s;
 }
 @keyframes zoomout{
   from{
     scale: 0;
   }to{
     scale: 1;
+  }
+}
+@keyframes flip{
+  from{
+    transform: rotateY(180deg);
+  }to{
+    transform: rotateY(0deg);
   }
 }
