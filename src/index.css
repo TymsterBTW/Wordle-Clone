@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap');
 body {
   margin: 0;
   font-family: sans-serif;
@@ -31,65 +32,41 @@ code {
   margin: 0 auto;
 }
 .input-container{
-  margin: 0 auto;
+  margin: 10vh auto;
   width: 28%;
-  padding: 5px;
+  background-attachment: red;
   display: grid;
   grid-template-columns: auto auto auto auto auto;
-  grid-template-rows: auto auto auto auto auto;
-  row-gap: 7px;
-  column-gap: 7px;
+  grid-template-rows: auto auto auto auto auto auto;
+  padding: 5px;
+  row-gap: 10px;
+  column-gap: 10px;
 }
 .InputField{
-  width: 100%;
-  -webkit-appearance: none;
-  border: 1px grey solid;
-  color: white;
+  background-color: transparent;
+  color: red;
   display: flex;
   align-items: center;
-  text-align: center;
   justify-content: space-around;
-  font-size: 40px;
-  border-radius: 4px;
-  height: 80px;
-  width: 80px;
+  height: 100%;
+  width: 100%;
 }
-.unselected{
-  background-color: transparent;
-  animation-name: zoomin;
-  animation-iteration-count: 1;
-  animation-duration: .2s;
-  border: 1px grey solid;
-}.selected{
-  background-color: transparent;
-  border: 2px grey solid;
+.Correct{
+  background-color: #538d4e;
+  border: none;
+}.Incorrect{
+  background-color: #393a3c;
+  border: none;
+}.ElseWhere{
+  background-color: #b49f3b;
+  border: none;
+}.zoomoutClass{
+  color: red;
   animation-name: zoomout;
+  animation-duration: 5s;
   animation-iteration-count: 1;
-  animation-duration: .2s;
-}
-.InputField:disabled{
-  -webkit-appearance: none;
-  color: black;
-}
-.littleshak{
-  animation-name: littleshake;
-  animation-duration: 0.5s;
-  animation-iteration-count: 1;
-}
-@keyframes littleshake{
-  from{
-    transform: translateX(50px);
-  }to{
-    transform-origin: translateX(500px);
-  }
 }
 @keyframes zoomout{
-  from{
-    scale: 0;
-  }to{
-    scale: 1;
-  }
-}@keyframes zoomin{
   from{
     scale: 0;
   }to{
