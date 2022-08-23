@@ -47,8 +47,17 @@ code {
     width: 40%;
     height: 10%;
   }.EndGamePanel{
-
   }
+}
+.WinStreak{
+  color: white;
+  background-color: red;
+  width: 20vw;
+  margin: 0 auto;
+  text-align: center;
+}
+.definition{
+  font-size: 15px;
 }
 .app{
   text-align: center;
