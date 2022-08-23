@@ -5,15 +5,52 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color:  #121213;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+@media only screen and (max-width: 700px){
+  .InputField{
+    font-size: 20px;
+  }.input-container{
+    width: 40vw;
+    grid-template-columns: 8vw 8vw 8vw 8vw 8vw;
+    grid-template-rows: 8vw 8vw 8vw 8vw 8vw 8vw;
+    row-gap: 2.2vw;
+    column-gap: 2.2vw;
+  }.newgame{
+    font-size: 10px;
+    width: 70%;
+  }.EndGamePanel{
+    color: blue;
+    font-size: 10px;
+    width: 100vw;
+    height: 3vw;
+    background-color: red;
+  }
+}@media only screen and (min-width: 701px){
+  .InputField{
+    font-size: 45px;
+  }.input-container{
+    width: 35vw;
+    grid-template-columns: 5vw 5vw 5vw 5vw 5vw;
+    grid-template-rows: 5vw 5vw 5vw 5vw 5vw 5vw;
+    row-gap: .6vw;
+    column-gap: .6vw;
+  }.newgame{
+    font-size: 26px;
+    width: 40%;
+    height: 10%;
+  }.EndGamePanel{
+
+  }
+}
 .app{
-  background-color: red;
-  color: red;
   text-align: center;
 }
 .title-container{
@@ -34,18 +71,28 @@ code {
 .input-container{
   display: grid;
   margin: 0 auto;
-  width: 35vw;
-  grid-template-columns: 5vw 5vw 5vw 5vw 5vw;
-  grid-template-rows: 5vw 5vw 5vw 5vw 5vw 5vw;
   justify-content: center;
-  row-gap: .6vw;
-  column-gap: .6vw;
+}
+.ErorrMessage{
+  margin: 0 35vw;
+  position: fixed;
+  width: 30vw;
+  padding: 5px;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  border: none;
+  border-radius: 2px;
+  animation-name: fadeout;
+  animation-duration: 2s;
 }
 .InputField{
   font-family: 'Open Sans', sans-serif;
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 30px;
   font-style: bold;
   background-color: transparent;
   color: white;
@@ -56,22 +103,54 @@ code {
   width: 100%;
   border: #565758 2px solid;
   border-radius: 2px;
+}.EndGamePanel{
+  position: fixed;
+  color: white;
+  width: 30vw;
+  height: 60vh;
+  left: 35vw;
+  background-color: rgb(30, 30, 31,0.7);
+  text-align: center;
+  animation-name: fadein;
+  animation-duration: 1.5s;
+  border-radius: 2px;
+}.newgame{
+  cursor: pointer;
+  background-color: #538d4e;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+  outline: none;
+  border: none;
+  padding: 5px;
+  border-radius: 2px;
 }
 .Correct{
   background-color: #538d4e;
   border: none;
   animation-name: flip;
-  animation-duration: 1.2s;
+  animation-duration: 1s;
 }.Incorrect{
   background-color: #393a3c;
   border: none;
   animation-name: flip;
-  animation-duration: 1.2s;
+  animation-duration: 1s;
 }.ElseWhere{
   background-color: #b49f3b;
   border: none;
   animation-name: flip;
-  animation-duration: 1.2s;
+  animation-duration: 1s;
+}
+#green{
+  background-color: #538d4e;
+  border: none;
+}#yellow{
+  background-color: #b49f3b;
+  border: none;
+}#grey{
+  background-color: #393a3c;
+  border: none;
 }
 @keyframes zoomout{
   from{
@@ -82,8 +161,22 @@ code {
 }
 @keyframes flip{
   from{
-    transform: rotateY(180deg);
+    transform: rotateX(-180deg);
   }to{
-    transform: rotateY(0deg);
+    transform: rotateX(0deg);
+  }
+}
+@keyframes fadeout {
+  from{
+    opacity: 1;
+  }to{
+    opacity: 0;
+  }
+}
+@keyframes fadein{
+  from{
+    opacity: 0;
+  }to{
+    opacity: 1;
   }
 }

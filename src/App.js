@@ -1,87 +1,130 @@
-import { useEffect, useState } from "react";
-import Row from "./Row";
-import Title from "./Title";
+import { useEffect, useState , React } from "react";
+import ReactDOM from "react-dom"
+import EndGamePanel from "./Components/EndGamePanel";
+import ErrorMessage from "./Components/ErrorMessage";
+import Row from "./Components/Row";
+import Title from "./Components/Title";
 import Words from "./Words";
 function App() {
   const [position , setposition] = useState([0,0]) //first refers to row second refers to place in the row
-  const [word , setword] = useState("")
-  const [output , setoutput] = useState(() => {
+  const [word , setword] = useState("") //current word to guess
+  const [gamestatus ,setgamestatus] = useState([false , false]) //first refers to game ended and second to victory or not
+  const [error , seterrormessage] = useState("")
+  const [output , setoutput] = useState(FillGrid())
+  function FillGrid(){
     let temp = [[],[],[],[],[],[]]
     temp.forEach(item => {
       for(let i = 0; i < 5; i ++){
-        item.push("")
+        var x = {
+          Colour : 'transparent',
+          value : ''
+        }
+        item.push(x)
       }
     })
     return temp;
-
-  })
-  var Word
+  }
   useEffect(() => {
-    setword(NewWord())
+    NewWord()
   },[])
-  //let temp = [..output] then modify and setoutput(temp)
   document.onkeydown = function(e){
-    let c = e.keyCode
-    if((64 < c && c < 91) || (96 < c && c < 123)){
-        console.log("letter")
-        if(position[1] == 5){
-          //nothing
-        }else{
+    if(gamestatus[0] == false){
+      let c = e.keyCode
+      if(((64 < c && c < 91) || (96 < c && c < 123)) && (!e.ctrlKey && !e.altKey && !e.metaKey)){
+          if(position[1] === 5){
+            //nothing
+          }else{
+            let temp = [...output]
+            temp[position[0]][position[1]].value = e.key
+            setoutput(temp)
+            setposition([position[0] , position[1] + 1])
+          }
+      }else if(c === 8){
+        if(position[1] >= 1){
           let temp = [...output]
-          temp[position[0]][position[1]] = e.key
+          temp[position[0]][position[1] - 1].value = ""
+          temp[position[0]][position[1] - 1].Colour = "transparent"
           setoutput(temp)
-          setposition([position[0] , position[1] + 1])
+          setposition([position[0] , position[1] - 1])
         }
-    }else if(c == 8){
-      if(position[1] >= 1){
-        let temp = [...output]
-        temp[position[0]][position[1]] = ""
-        setoutput(temp)
-        setposition([position[0] , position[1] - 1])
-      }
-    }else if(c == 13){
-      console.log("enter")
-      if(position[1] == 5){
-        CheckWord()
+      }else if(c === 13){
+        if(position[1] === 5){
+          CheckWord()
+        }else{
+          ChangeError("Word needs to be 5 letters long")
+        }
       }
     }
+  }
+  function ChangeError(msg){
+    seterrormessage(msg)
+    setTimeout(() => {
+      seterrormessage("")
+    },2000)
   }
   function CheckWord(){
     const Letters = document.getElementsByClassName("InputField")
     console.log(word)
-    var wordString = output[position[0]].toString().replace(/,/g , "").toLowerCase() //converting array to string
-    if(Words.indexOf(wordString) == -1){
-      console.log("word not in wordset")
-    }else if(word == wordString.toUpperCase()){
-      for(let i = 0; i < 5; i++){
-        Letters[position[0] * 5 + i].classList.add("correct")
-      }
+    //var wordString = output[position[0]].toString().replace(/,/g , "").toLowerCase() //converting array to string
+    var wordString = ""
+    for(let i = 0; i < 5; i ++){
+      wordString += output[position[0]][i].value
+    }
+    if(Words.indexOf(wordString) === -1){
+      ChangeError("Word not in wordset")
+      return;
+    }
+    var i = 0
+    var coolanimation = setInterval(() => {
+    if(i === 4){
+      clearInterval(coolanimation)
+    }
+    if(word[i] === wordString[i]){
+      //green
+      Letters[position[0] * 5 + i].classList.add("Correct")
+      output[position[0]][i].Colour = "green"
+    }else if(word.includes(wordString[i])){
+      //yellow
+      Letters[position[0] * 5 + i].classList.add("ElseWhere")
+      output[position[0]][i].Colour = "yellow"
     }else{
-      var i = 0
-      var coolanimation = setInterval(() => {
-        if(i == 4){
-          clearInterval(coolanimation)
-        }
-        if(word[i] == wordString[i]){
-          //green
-          Letters[position[0] * 5 + i].classList.add("Correct")
-        }else if(word.includes(wordString[i])){
-          Letters[position[0] * 5 + i].classList.add("ElseWhere")
-        }else{
-          Letters[position[0] * 5 + i].classList.add("Incorrect")
-        }
-        i += 1
-      },500)
+      //grey
+      Letters[position[0] * 5 + i].classList.add("Incorrect")
+      output[position[0]][i].Colour = "grey"
+    }
+    i += 1
+    },450)
+    setTimeout(() => {
+      if(word.toLowerCase() === wordString.toLowerCase()){
+        setgamestatus([true , true])
+      }else if(position[0] == 5){
+        setgamestatus([true , false])
+      }
+      return;
+    },3000)
+    //next row
+    if(position[0] == 5){
+    }else{  
       setposition([position[0] + 1 , 0])
     }
   }
+
   function NewWord(){
     let word = Words[Math.floor(Math.random() * Words.length)]
-    return word
+    console.log(word)
+    setword(word)
+  }
+  function NewGame(){
+    setposition([0,0])
+    setgamestatus([false , false])
+    setoutput(FillGrid())
+    NewWord()
   }
   return (
-    <div className="App">
+    <div className="App" id="App">
       <Title/>
+      {error !== "" && <ErrorMessage error={error}/>}
+      {gamestatus[0] == true && <EndGamePanel victory={gamestatus[1]} guesses={position[0]} newgame={NewGame} word={word}/>}
       <div className="input-container">
         {output.map(row => (
           <Row list={row} key={output.indexOf(row)} />
