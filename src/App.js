@@ -2,6 +2,7 @@ import { useEffect, useState , React } from "react";
 import ReactDOM from "react-dom"
 import EndGamePanel from "./Components/EndGamePanel";
 import ErrorMessage from "./Components/ErrorMessage";
+import Keyboard from "./Components/Keyboard";
 import Row from "./Components/Row";
 import Title from "./Components/Title";
 import Words from "./Words";
@@ -11,6 +12,15 @@ function App() {
   const [gamestatus ,setgamestatus] = useState([false , false]) //first refers to game ended and second to victory or not
   const [error , seterrormessage] = useState("")
   const [output , setoutput] = useState(FillGrid())
+  const [Letters , setLetters] = useState(FillLettersKeyboard())
+  function FillLettersKeyboard(){
+    let Alphabet = "qwertyuiopasdfghjklzxcvbnm"
+    let temp = []
+    for(let i = 0; i < 26; i ++){
+      temp.push({letter : Alphabet[i] , color: 'transparent'})
+    }
+    return temp
+  }
   function FillGrid(){
     let temp = [[],[],[],[],[],[]]
     temp.forEach(item => {
@@ -27,15 +37,18 @@ function App() {
   useEffect(() => {
     NewWord()
   },[])
-  document.onkeydown = function(e){
+  document.onkeydown = (event) => {OnInput(event)}
+  function OnInput(e){
+    const Letters = document.getElementsByClassName("InputField")
     if(gamestatus[0] == false){
-      let c = e.keyCode
+      let c = e.keyCode 
       if(((64 < c && c < 91) || (96 < c && c < 123)) && (!e.ctrlKey && !e.altKey && !e.metaKey)){
           if(position[1] === 5){
             //nothing
           }else{
             let temp = [...output]
             temp[position[0]][position[1]].value = e.key
+            Letters[position[0] * 5 + position[1]].classList.add("zoomout")
             setoutput(temp)
             setposition([position[0] , position[1] + 1])
           }
@@ -62,10 +75,17 @@ function App() {
       seterrormessage("")
     },2000)
   }
+  function SetKeyColor(key , color){
+    for(let i = 0; i < 26; i++){
+      if(Letters[i].letter == key){
+        let temp = [...Letters]
+        temp[i].color = color
+        setLetters(temp)
+      }
+    }
+  } 
   function CheckWord(){
-    const Letters = document.getElementsByClassName("InputField")
-    console.log(word)
-    //var wordString = output[position[0]].toString().replace(/,/g , "").toLowerCase() //converting array to string
+    const LettersList = document.getElementsByClassName("InputField")
     var wordString = ""
     for(let i = 0; i < 5; i ++){
       wordString += output[position[0]][i].value
@@ -76,23 +96,24 @@ function App() {
     }
     var i = 0
     var coolanimation = setInterval(() => {
-    if(i === 4){
-      clearInterval(coolanimation)
-    }
-    if(word[i] === wordString[i]){
-      //green
-      Letters[position[0] * 5 + i].classList.add("Correct")
-      output[position[0]][i].Colour = "green"
-    }else if(word.includes(wordString[i])){
-      //yellow
-      Letters[position[0] * 5 + i].classList.add("ElseWhere")
-      output[position[0]][i].Colour = "yellow"
-    }else{
-      //grey
-      Letters[position[0] * 5 + i].classList.add("Incorrect")
-      output[position[0]][i].Colour = "grey"
-    }
-    i += 1
+      if(i === 4){
+        clearInterval(coolanimation)
+      }
+      if(word[i] === wordString[i]){
+        //green
+        LettersList[position[0] * 5 + i].classList.add("Correct")
+        output[position[0]][i].Colour = "green"
+
+      }else if(word.includes(wordString[i])){
+        //yellow
+        LettersList[position[0] * 5 + i].classList.add("ElseWhere")
+        output[position[0]][i].Colour = "yellow"
+      }else{
+        //grey
+        LettersList[position[0] * 5 + i].classList.add("Incorrect")
+        output[position[0]][i].Colour = "grey"
+      }
+      i += 1
     },450)
     setTimeout(() => {
       if(word.toLowerCase() === wordString.toLowerCase()){
@@ -111,13 +132,14 @@ function App() {
 
   function NewWord(){
     let word = Words[Math.floor(Math.random() * Words.length)]
-    console.log(word)
     setword(word)
   }
+
   function NewGame(){
     setposition([0,0])
     setgamestatus([false , false])
     setoutput(FillGrid())
+    setLetters(FillLettersKeyboard()) 
     NewWord()
   }
   return (
@@ -130,6 +152,7 @@ function App() {
           <Row list={row} key={output.indexOf(row)} />
         ))}
       </div>
+      <Keyboard data={Letters}/>
     </div>
   );
 }

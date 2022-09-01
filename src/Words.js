@@ -102,6 +102,8 @@ var Words = [
     "aloft",
     "aloha",
     "alone",
+    "rhyme",
+    "joker",
     "along",
     "aloof",
     "aloud",
