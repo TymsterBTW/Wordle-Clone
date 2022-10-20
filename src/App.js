@@ -2,10 +2,11 @@ import { useEffect, useState , React } from "react";
 import ReactDOM from "react-dom"
 import EndGamePanel from "./Components/EndGamePanel";
 import ErrorMessage from "./Components/ErrorMessage";
-import Keyboard from "./Components/Keyboard";
 import Row from "./Components/Row";
 import Title from "./Components/Title";
 import Words from "./Words";
+
+
 function App() {
   const [position , setposition] = useState([0,0]) //first refers to row second refers to place in the row
   const [word , setword] = useState("") //current word to guess
@@ -152,7 +153,6 @@ function App() {
           <Row list={row} key={output.indexOf(row)} />
         ))}
       </div>
-      <Keyboard data={Letters}/>
     </div>
   );
 }
