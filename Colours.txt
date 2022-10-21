@@ -1,1 +1,4 @@
 Orange: #b29d3b
+Green : #558c4f
+Grey : #b1b3b1
+Background : #141414
